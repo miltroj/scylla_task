@@ -60,7 +60,7 @@ To run the program, follow these steps:
 You will need the node IP to run the stress test. Run the following command to get the IP address:
 
 ```bash
-docker exec -it some-scylla nodetool status
+docker exec -it some-scylla nodetool status | grep -oP '(\d{1,3}\.){3}\d{1,3}' | sed -n 1p
 ```
 
 1. **Run the stress test:**
