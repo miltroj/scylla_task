@@ -67,7 +67,7 @@ docker exec -it some-scylla nodetool status | grep -oP '(\d{1,3}\.){3}\d{1,3}' |
 Use the following command to run the Python script:
 
 ```bash
-python even_more_stress.py --N_runs 1 --durations 1 --node_ip 172.17.0.2
+even-more-stress --N_runs 2 --durations 10 10 --node_ip 172.17.0.2 --html
 ```
 
 * `N_runs:` Number of concurrent cassandra-stress commands to run.

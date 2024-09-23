@@ -1,5 +1,5 @@
-from even_more_stress.even_more_stress import run_stress_tests, present_results
-from even_more_stress.stress_run_entity import CassandraStressRun
+from even_more_stress.core.concurent_runner import CassandraRunner
+from even_more_stress.core.stress_run_entity import CassandraStressRun
 
 
 def run_fake_process(thread_id, *args, **kwargs):
@@ -9,16 +9,15 @@ def run_fake_process(thread_id, *args, **kwargs):
 class TestingConcurentRunner:
 
     def test_it_is_posibile_to_run_5_concurent_processes(self):
-        return_5_results = run_stress_tests(
-            n_runs=5, node_ip="ip-stub", run_function=run_fake_process,
-            durations=[10]
-        )
+        runner = CassandraRunner(n_runs=5, node_ip="ip-stub", durations=[10] * 5)
+        CassandraRunner.run_single_cassandra_stress_test = run_fake_process
+        return_5_results = runner.run_stress_tests()
         assert len(return_5_results) == 5
 
     def test_it_is_posibile_to_run_0_concurent_processes(self):
-        return_0_results = run_stress_tests(
-            n_runs=0, node_ip="ip-stub", run_function=run_fake_process, durations=[10],
-        )
+        runner = CassandraRunner(n_runs=0, node_ip="ip-stub", durations=[10])
+        CassandraRunner.run_single_cassandra_stress_test = run_fake_process
+        return_0_results = runner.run_stress_tests()
         assert len(return_0_results) == 0
 
 
@@ -38,7 +37,7 @@ class TestMainUtils:
         run_2.latency_max = 8
 
         total_op_rate, avg_latency_mean, avg_latency_99th, latency_max_stdev = (
-            present_results([run_1, run_2])
+            CassandraRunner.present_results([run_1, run_2])
         )
         assert total_op_rate == 15
         assert avg_latency_mean == 26 / 2
