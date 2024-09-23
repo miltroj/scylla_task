@@ -67,7 +67,7 @@ docker exec -it some-scylla nodetool status
 Use the following command to run the Python script:
 
 ```bash
-python main.py --N_runs 1 --durations 1 --node_ip 172.17.0.2
+python even_more_stress.py --N_runs 1 --durations 1 --node_ip 172.17.0.2
 ```
 
 * `N_runs:` Number of concurrent cassandra-stress commands to run.

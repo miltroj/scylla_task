@@ -1,5 +1,5 @@
-from even_more_stress.main import run_stress_tests, present_results
-from even_more_stress.stress_run import CassandraStressRun
+from even_more_stress.even_more_stress import run_stress_tests, present_results
+from even_more_stress.stress_run_entity import CassandraStressRun
 
 
 def run_fake_process(thread_id, *args, **kwargs):

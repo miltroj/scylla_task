@@ -1,4 +1,4 @@
-from even_more_stress.stress_run import CassandraStressRun
+from even_more_stress.stress_run_entity import CassandraStressRun
 import pytest
 
 
