@@ -1,6 +1,6 @@
 from time import time
 import logging
-from subprocess import run, PIPE, call, check_output
+from subprocess import run, PIPE
 import re
 
 logger = logging.getLogger(__name__)
@@ -37,34 +37,18 @@ class CassandraStressRun:
         # TODO: pin specific digest
         self._image_name = "scylladb/cassandra-stress"
         self._cassandra_threads = 10
-        # self._run_command = f'docker run {self._image_name} "cassandra-stress write duration={self.duration}s -rate threads={self._cassandra_threads} -node {self.node_ip}"'
         self._run_command = f"docker run {self._image_name} 'cassandra-stress write duration={self.duration}s -rate threads={self._cassandra_threads} -node {self.node_ip}'"
-        # self._run_command = ["docker", "run", self._image_name, f'cassandra-stress write duration={self.duration}s -rate threads={self._cassandra_threads} -node {self.node_ip}']
 
     @property
     def time_taken(self):
         return self.end_time - self.start_time
-
-    @property
-    def run_command(self):
-        # cmd = [
-        #     'docker', 'run', '-it', 'scylladb/cassandra-stress',
-        #     'cassandra-stress', 'write', 'duration=10s',
-        #     '-rate', 'threads=10', '-node', '127.0.0.1'
-        # ]
-        # cmd = [el.splitlines() for el in self._run_command]
-        cmd = self._run_command
-        logger.debug(f"Running cmd = {cmd}")
-        return cmd
 
     def run_stress_test(self):
         self.start_time = time()
         logging.info(
             f"Thread {self.thread_id}: Starting stress test with duration={self.duration} on node {self.node_ip}"
         )
-        # result = run(self.run_command, stdout=PIPE, stderr=PIPE, check=True)
-        # print(check_output(self.run_command))
-        result = run(self.run_command, stdout=PIPE, stderr=PIPE, shell=True)
+        result = run(self._run_command, stdout=PIPE, stderr=PIPE, shell=True)
         if result.returncode != 0:
             logger.error(f"Command failed with return code {result.returncode}")
             logger.error("Error output (stderr):")

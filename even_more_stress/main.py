@@ -55,7 +55,7 @@ def parse_args():
         type=int,
         nargs="+",
         required=False,
-        default=None,
+        default=[10],
         help="List of durations (in seconds) for each stress command. Must match the number of threads.",
     )
     parser.add_argument(
@@ -65,12 +65,14 @@ def parse_args():
 
 
 def run_stress_tests(
-    n_runs, node_ip, durations=None, run_function=run_single_cassandra_stress_test
+    n_runs, node_ip, durations, run_function=run_single_cassandra_stress_test
 ):
     stress_tests = []
     threads = []
 
-    # TODO: handle empty duration
+    if len(durations) == 1:
+        durations = [durations[0] for _ in range(n_runs)]
+
     for i, duration in zip(range(n_runs), durations):
         thread = threading.Thread(
             target=lambda: stress_tests.append(

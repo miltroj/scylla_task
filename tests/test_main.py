@@ -2,21 +2,22 @@ from even_more_stress.main import run_stress_tests, present_results
 from even_more_stress.stress_run import CassandraStressRun
 
 
-def run_fake_process(n):
-    return n
+def run_fake_process(thread_id, *args, **kwargs):
+    return thread_id
 
 
 class TestingConcurentRunner:
 
     def test_it_is_posibile_to_run_5_concurent_processes(self):
         return_5_results = run_stress_tests(
-            n_runs=5, node_ip="ip-stub", run_function=run_fake_process
+            n_runs=5, node_ip="ip-stub", run_function=run_fake_process,
+            durations=[10]
         )
         assert len(return_5_results) == 5
 
     def test_it_is_posibile_to_run_0_concurent_processes(self):
         return_0_results = run_stress_tests(
-            n_runs=0, node_ip="ip-stub", run_function=run_fake_process
+            n_runs=0, node_ip="ip-stub", run_function=run_fake_process, durations=[10],
         )
         assert len(return_0_results) == 0
 

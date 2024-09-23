@@ -21,7 +21,7 @@ Total GC memory           : 0.000 KiB
 Total GC time             :    0.0 seconds
 Avg GC time               :    NaN ms
 StdDev GC time            :    0.0 ms
-Total operation time      : 00:00:10"""
+Total operation time      : 00:00:10""".replace("\n", "").replace("\r", "")
 
 
 @pytest.fixture
@@ -162,7 +162,7 @@ Avg GC time               :    NaN ms
 StdDev GC time            :    0.0 ms
 Total operation time      : 00:00:10
 
-END"""
+END""".replace("\n", "").replace("\r", "")
 
 
 class TestOutputRegexpMatching:
