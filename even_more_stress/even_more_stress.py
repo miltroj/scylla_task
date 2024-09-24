@@ -88,8 +88,7 @@ def run_stress_tests(
     return stress_tests
 
 
-if __name__ == "__main__":
-
+def main():
     args = parse_args()
     logger.info("Even more stress STARTING!")
 
@@ -101,3 +100,7 @@ if __name__ == "__main__":
         n_runs=args.N_runs, durations=args.durations, node_ip=args.node_ip
     )
     present_results(results)
+
+
+if __name__ == "__main__":
+    main()

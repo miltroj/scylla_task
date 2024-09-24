@@ -6,6 +6,9 @@ authors = ["Milosz Trojanowski"]
 readme = "README.md"
 packages = [{include = "even_more_stress"}]
 
+[tool.poetry.scripts]
+even-more-stress = "even_more_stress.even_more_stress:main"
+
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
 
