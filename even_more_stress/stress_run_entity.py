@@ -51,9 +51,6 @@ class CassandraStressRun:
         result = run(self._run_command, stdout=PIPE, stderr=PIPE, shell=True)
         if result.returncode != 0:
             logger.error(f"Command failed with return code {result.returncode}")
-            logger.error("Error output (stderr):")
-            logger.error(result.stderr)
-            logger.error(result.stdout)
             raise Exception(f"StdError {result.stderr}, {result.stdout}!")
         self.end_time = time()
         self.parse_results(result.stdout.decode("utf-8"))

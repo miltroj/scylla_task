@@ -40,13 +40,23 @@ def present_results(output_runs):
     return total_op_rate, avg_latency_mean, avg_latency_99th, latency_max_stdev
 
 
+def positive_int(value):
+    try:
+        int_value = int(value)
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"{value} is not an integer!")
+    if int_value < 1:
+        raise argparse.ArgumentTypeError(f"{value} is not a positive integer!")
+    return int_value
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Run cassandra-stress tests and analyze results."
     )
     parser.add_argument(
         "--N_runs",
-        type=int,
+        type=positive_int,
         required=True,
         help="Number of concurrent cassandra stress containers.",
     )
@@ -55,7 +65,7 @@ def parse_args():
         type=int,
         nargs="+",
         required=False,
-        default=[10],
+        default=[],
         help="List of durations (in seconds) for each stress command. Must match the number of threads.",
     )
     parser.add_argument(
@@ -92,10 +102,13 @@ def main():
     args = parse_args()
     logger.info("Even more stress STARTING!")
 
-    if args.durations and args.N_runs != len(args.durations):
+    if not args.durations:
+        args.durations = [10] * args.N_runs
+    if args.N_runs != len(args.durations):
         raise ValueError(
             f"N_runs and durations should be the same while N_runs={args.N_runs}, durations={len(args.durations)}!"
         )
+
     results = run_stress_tests(
         n_runs=args.N_runs, durations=args.durations, node_ip=args.node_ip
     )
